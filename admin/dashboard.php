@@ -4,6 +4,7 @@ include '../includes/db.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Admin - Clientes</title>
@@ -11,7 +12,7 @@ include '../includes/db.php';
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
@@ -19,35 +20,43 @@ include '../includes/db.php';
         body {
             background-color: #f4f6f9;
         }
+
         .card-container {
             background: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
+
         .admin-header {
             margin-bottom: 30px;
         }
+
         .action-buttons a {
             margin-right: 10px;
         }
+
         .table thead {
             background-color: #0d6efd;
             color: white;
         }
+
         .table tbody tr:hover {
             background-color: #f1f1f1;
         }
+
         @media (max-width: 576px) {
             .action-buttons {
                 flex-direction: column;
             }
+
             .action-buttons a {
                 margin-bottom: 10px;
             }
         }
     </style>
 </head>
+
 <body class="p-4">
 
     <div class="container">
@@ -71,6 +80,7 @@ include '../includes/db.php';
                             <th>DNI</th>
                             <th>Celular</th>
                             <th>Sellos</th>
+                            <th>Acciones</th> <!-- Nueva columna -->
                         </tr>
                     </thead>
                     <tbody>
@@ -80,13 +90,17 @@ include '../includes/db.php';
                             $stmt = $pdo->prepare("SELECT COUNT(*) FROM sellos WHERE usuario_id = ?");
                             $stmt->execute([$cli['id']]);
                             $sellos = $stmt->fetchColumn();
-                        ?>
-                        <tr>
-                            <td><?= htmlspecialchars($cli['nombre_completo']) ?></td>
-                            <td><?= htmlspecialchars($cli['dni']) ?></td>
-                            <td><?= htmlspecialchars($cli['celular']) ?></td>
-                            <td><span class="badge bg-info fs-6"><?= $sellos ?></span></td>
-                        </tr>
+                            ?>
+                            <tr>
+                                <td><?= htmlspecialchars($cli['nombre_completo']) ?></td>
+                                <td><?= htmlspecialchars($cli['dni']) ?></td>
+                                <td><?= htmlspecialchars($cli['celular']) ?></td>
+                                <td><span class="badge bg-info fs-6"><?= $sellos ?></span></td>
+                                <td>
+                                    <a href="editar_cliente.php?id=<?= $cli['id'] ?>" class="btn btn-sm btn-warning">✏️
+                                        Editar</a>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -110,33 +124,34 @@ include '../includes/db.php';
         // });
 
         $(document).ready(function () {
-    $('#clientesTable').DataTable({
-        language: {
-            decimal: "",
-            emptyTable: "No hay datos disponibles en la tabla",
-            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-            infoEmpty: "Mostrando 0 a 0 de 0 registros",
-            infoFiltered: "(filtrado de _MAX_ registros totales)",
-            lengthMenu: "Mostrar _MENU_ registros",
-            loadingRecords: "Cargando...",
-            processing: "Procesando...",
-            search: "Buscar:",
-            zeroRecords: "No se encontraron resultados",
-            paginate: {
-                first: "Primero",
-                last: "Último",
-                next: "Siguiente",
-                previous: "Anterior"
-            },
-            aria: {
-                sortAscending: ": activar para ordenar ascendente",
-                sortDescending: ": activar para ordenar descendente"
-            }
-        }
-    });
-});
+            $('#clientesTable').DataTable({
+                language: {
+                    decimal: "",
+                    emptyTable: "No hay datos disponibles en la tabla",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    infoFiltered: "(filtrado de _MAX_ registros totales)",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    loadingRecords: "Cargando...",
+                    processing: "Procesando...",
+                    search: "Buscar:",
+                    zeroRecords: "No se encontraron resultados",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    },
+                    aria: {
+                        sortAscending: ": activar para ordenar ascendente",
+                        sortDescending: ": activar para ordenar descendente"
+                    }
+                }
+            });
+        });
 
     </script>
 
 </body>
+
 </html>

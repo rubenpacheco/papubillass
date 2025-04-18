@@ -77,67 +77,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 
-    
-    <a href="https://wa.me/51916377263?text=Hola,%20estoy%20interesado%20en%20el%20software" 
-   class="whatsapp-bubble" target="_blank">
-    <div class="whatsapp-icon">
+    <a href="https://wa.me/51987654321?text=Hola,%20estoy%20interesado%20en%20el%20software" 
+    class="whatsapp-float" target="_blank">
         <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp">
-    </div>
-    <div class="whatsapp-message">
-        💬 ¿Adquiere tu software?
-    </div>
-</a>
-
+        <span class="whatsapp-text">Adquiere tu software</span>
+    </a>
 
 
 </body>
 </html>
 <style>
- 
- .whatsapp-bubble {
-    position: fixed;         /* Se queda fijo en pantalla */
-    bottom: 25px;            /* Distancia desde abajo */
-    right: 20px;             /* Distancia desde la derecha */
+    .whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25d366;
+    color: white;
+    border-radius: 30px;
+    padding: 8px 12px;
+    text-decoration: none;
     display: flex;
     align-items: center;
-    background-color: #ffffff;
-    border-radius: 30px;
-    padding: 6px 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    transition: transform 0.2s ease;
+}
+.whatsapp-float:hover {
+    transform: scale(1.05);
     text-decoration: none;
-    z-index: 9999;
-    animation: floatIn 0.4s ease-in-out;
+    color: white;
 }
-
-.whatsapp-icon img {
-    width: 36px;
-    height: 36px;
+.whatsapp-float img {
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
 }
-
-.whatsapp-message {
-    margin-left: 10px;
+.whatsapp-text {
+    font-weight: bold;
     font-size: 14px;
-    font-weight: 500;
-    color: #075e54;
-    white-space: nowrap;
 }
-
-@keyframes floatIn {
-    from {
-        transform: translateY(40px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* Oculta el mensaje en pantallas pequeñas (opcional) */
-/* @media (max-width: 576px) {
-    .whatsapp-message {
-        display: none;
-    }
-} */
 
 </style>
