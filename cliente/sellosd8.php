@@ -13,3 +13,4 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
 <p>Tienes <?= $total ?> sellos.</p>
 <p><?= $total >= $meta ? "¡Ganaste un premio!" : "Te faltan " . ($meta - $total) . " para un premio." ?></p>
 <a href="qr.php">Volver al QR</a>
+<?php include '../includes/whatsapp.php'; ?>

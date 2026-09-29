@@ -46,5 +46,6 @@
             </div>
         </form>
     </div>
+<?php include '../includes/whatsapp.php'; ?>
 </body>
 </html>

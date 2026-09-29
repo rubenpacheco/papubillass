@@ -275,6 +275,7 @@ include '../includes/db.php';
         </script>
     <?php endif; ?>
 
+<?php include '../includes/whatsapp.php'; ?>
 </body>
 
 </html>

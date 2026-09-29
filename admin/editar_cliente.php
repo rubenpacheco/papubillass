@@ -146,5 +146,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </script>
 
+<?php include '../includes/whatsapp.php'; ?>
 </body>
 </html>

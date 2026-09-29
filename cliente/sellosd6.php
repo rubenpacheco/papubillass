@@ -156,5 +156,6 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
         <a href="qr.php" class="btn-back">← Volver al QR</a>
     </div>
 
+<?php include '../includes/whatsapp.php'; ?>
 </body>
 </html>

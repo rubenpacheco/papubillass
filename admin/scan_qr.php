@@ -84,5 +84,6 @@
         );
     </script>
 
+<?php include '../includes/whatsapp.php'; ?>
 </body>
 </html>

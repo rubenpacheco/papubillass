@@ -101,5 +101,6 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
         </div>
     </div>
 
+<?php include '../includes/whatsapp.php'; ?>
 </body>
 </html>
