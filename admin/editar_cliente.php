@@ -22,17 +22,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dni = trim($_POST['dni'] ?? '');
     $celular = trim($_POST['celular']);
     $password = trim($_POST['password'] ?? '');
+    $rol = $_POST['rol'] ?? 'cliente';
 
-    if ($password !== '') {
-        $update = $pdo->prepare("UPDATE usuarioss SET nombre_completo = ?, dni = ?, celular = ?, password = ? WHERE id = ?");
-        $update->execute([$nombre, $dni !== '' ? $dni : null, $celular, password_hash($password, PASSWORD_BCRYPT), $id]);
-    } else {
-        $update = $pdo->prepare("UPDATE usuarioss SET nombre_completo = ?, dni = ?, celular = ? WHERE id = ?");
-        $update->execute([$nombre, $dni !== '' ? $dni : null, $celular, $id]);
+    $roles_permitidos = ['trabajador', 'cliente', 'administrador'];
+    if (!in_array($rol, $roles_permitidos, true)) {
+        $rol = $cliente['rol'];
     }
 
-    header("Location: dashboard.php");
-    exit;
+    try {
+        if ($password !== '') {
+            $update = $pdo->prepare("UPDATE usuarioss SET nombre_completo = ?, dni = ?, celular = ?, rol = ?, password = ? WHERE id = ?");
+            $update->execute([$nombre, $dni !== '' ? $dni : null, $celular, $rol, password_hash($password, PASSWORD_BCRYPT), $id]);
+        } else {
+            $update = $pdo->prepare("UPDATE usuarioss SET nombre_completo = ?, dni = ?, celular = ?, rol = ? WHERE id = ?");
+            $update->execute([$nombre, $dni !== '' ? $dni : null, $celular, $rol, $id]);
+        }
+
+        header("Location: dashboard.php?ok=1");
+        exit;
+    } catch (PDOException $e) {
+        $codigo = $e->errorInfo[1] ?? null;
+        $msg = $codigo === 1062 ? 'Ese celular ya está registrado en otro usuario.' : 'No se pudieron guardar los cambios.';
+        header('Location: dashboard.php?' . http_build_query(['err' => $msg]));
+        exit;
+    }
 }
 ?>
 
@@ -85,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="container">
         <div class="edit-container">
-            <h3 class="edit-title mb-4 text-center">✏️ Editar Cliente</h3>
+            <h3 class="edit-title mb-4 text-center">✏️ Editar Usuario</h3>
             <form method="POST">
                 <div class="mb-3">
                     <label for="nombre_completo" class="form-label">Nombre Completo</label>
@@ -98,6 +111,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="mb-3">
                     <label for="celular" class="form-label">Celular</label>
                     <input type="text" name="celular" id="celular" class="form-control" value="<?= htmlspecialchars($cliente['celular']) ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="rol" class="form-label">Rol</label>
+                    <?php $rol_actual = $cliente['rol'] === 'admin' ? 'administrador' : $cliente['rol']; ?>
+                    <select name="rol" id="rol" class="form-select" required>
+                        <option value="trabajador" <?= $rol_actual === 'trabajador' ? 'selected' : '' ?>>Trabajador</option>
+                        <option value="cliente" <?= $rol_actual === 'cliente' ? 'selected' : '' ?>>Cliente</option>
+                        <option value="administrador" <?= $rol_actual === 'administrador' ? 'selected' : '' ?>>Administrador</option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Nueva contraseña</label>

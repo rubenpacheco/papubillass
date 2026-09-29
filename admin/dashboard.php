@@ -68,7 +68,7 @@ include '../includes/db.php';
         <div class="card-container">
             <?php if (isset($_GET['ok'])): ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    ✅ Usuario registrado correctamente.
+                    ✅ Cambios guardados correctamente.
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             <?php endif; ?>
