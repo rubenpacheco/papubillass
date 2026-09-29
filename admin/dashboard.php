@@ -98,7 +98,10 @@ include '../includes/db.php';
                             <input type="text" name="nombre" placeholder="Nombre Completo" class="form-control mb-3" required>
                             <input type="text" name="dni" placeholder="DNI (opcional)" class="form-control mb-3">
                             <input type="text" name="celular" placeholder="Celular" class="form-control mb-3" required>
-                            <input type="password" name="password" placeholder="Contraseña" class="form-control mb-3" required>
+                            <div class="input-group mb-3">
+                                <input type="password" name="password" id="passNuevo" class="form-control" placeholder="Contraseña" required>
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePass(this)" title="Mostrar u ocultar contraseña">👁</button>
+                            </div>
                             <label for="rol" class="form-label">Rol</label>
                             <select name="rol" id="rol" class="form-select mb-2" required>
                                 <option value="trabajador">Trabajador</option>
@@ -198,6 +201,14 @@ include '../includes/db.php';
 
     <!-- Bootstrap JS (necesario para el modal) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function togglePass(btn) {
+            const input = btn.parentElement.querySelector('input');
+            const ver = input.type === 'password';
+            input.type = ver ? 'text' : 'password';
+            btn.textContent = ver ? '🙈' : '👁';
+        }
+    </script>
     <?php if (isset($_GET['open'])): ?>
         <script>
             window.addEventListener('load', function () {

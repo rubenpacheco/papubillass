@@ -123,7 +123,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Nueva contraseña</label>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="Déjalo en blanco para no cambiarla">
+                    <div class="input-group">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Déjalo en blanco para no cambiarla">
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePass(this)" title="Mostrar u ocultar contraseña">👁</button>
+                    </div>
                 </div>
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-success">💾 Guardar Cambios</button>
@@ -133,6 +136,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
+
+    <script>
+        function togglePass(btn) {
+            const input = btn.parentElement.querySelector('input');
+            const ver = input.type === 'password';
+            input.type = ver ? 'text' : 'password';
+            btn.textContent = ver ? '🙈' : '👁';
+        }
+    </script>
 
 </body>
 </html>

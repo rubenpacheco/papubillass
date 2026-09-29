@@ -80,12 +80,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" name="celular" class="form-control" placeholder="Celular" required>
             </div>
             <div class="mb-3 text-start">
-                <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
+                <div class="input-group">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" required>
+                    <button class="btn btn-outline-secondary" type="button" onclick="togglePass(this)" title="Mostrar u ocultar contraseña">👁</button>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary w-100">Ingresar</button>
         </form>
     </div>
 
+    <script>
+        function togglePass(btn) {
+            const input = btn.parentElement.querySelector('input');
+            const ver = input.type === 'password';
+            input.type = ver ? 'text' : 'password';
+            btn.textContent = ver ? '🙈' : '👁';
+        }
+    </script>
     
     <a href="https://wa.me/51916377263?text=Hola,%20estoy%20interesado%20en%20el%20software" 
    class="whatsapp-bubble" target="_blank">
