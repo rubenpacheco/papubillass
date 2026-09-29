@@ -32,7 +32,12 @@ include '../includes/db.php';
             margin-bottom: 30px;
         }
 
-        .action-buttons a {
+        .action-buttons {
+            gap: 10px;
+        }
+
+        .action-buttons a,
+        .action-buttons button {
             margin-right: 10px;
         }
 
@@ -50,7 +55,8 @@ include '../includes/db.php';
                 flex-direction: column;
             }
 
-            .action-buttons a {
+            .action-buttons a,
+            .action-buttons button {
                 margin-bottom: 10px;
             }
         }
