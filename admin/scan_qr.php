@@ -65,7 +65,7 @@
 
     <script>
         function onScanSuccess(qrCodeMessage) {
-            window.location.href = "sumar_sello.php?dni=" + qrCodeMessage;
+            window.location.href = "sumar_sello.php?celular=" + encodeURIComponent(qrCodeMessage);
         }
 
         function onScanError(errorMessage) {

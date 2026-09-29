@@ -55,7 +55,7 @@ $disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
             <h4 class="mb-3">¡Hola, <?= htmlspecialchars($_SESSION['user']['nombre_completo']) ?>!</h4>
             <p class="text-muted">Este es tu código QR personal</p>
 
-            <img src="../qrcodes/<?= htmlspecialchars($_SESSION['user']['dni']) ?>.png" alt="Mi Código QR"
+            <img src="../qrcodes/<?= htmlspecialchars($_SESSION['user']['celular']) ?>.png" alt="Mi Código QR"
                 class="qr-img mb-4">
 
                 <a href="<?= $disenio ?>.php" class="btn btn-primary d-block mb-3">Ver Sellos</a>

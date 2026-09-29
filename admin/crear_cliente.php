@@ -13,14 +13,14 @@ use Endroid\QrCode\Writer\PngWriter;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'];
-    $dni = $_POST['dni'];
-    $celular = $_POST['celular'];
+    $dni = trim($_POST['dni'] ?? '');
+    $celular = trim($_POST['celular']);
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
     try {
         // Insertar nuevo cliente
         $stmt = $pdo->prepare("INSERT INTO usuarioss (nombre_completo, dni, celular, rol, password) VALUES (?, ?, ?, 'cliente', ?)");
-        $stmt->execute([$nombre, $dni, $celular, $password]);
+        $stmt->execute([$nombre, $dni !== '' ? $dni : null, $celular, $password]);
 
         // Crear carpeta de códigos QR si no existe
         $qrFolder = "../qrcodes";
@@ -31,13 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Generar código QR
         $qr = Builder::create()
             ->writer(new PngWriter())
-            ->data($dni)
+            ->data($celular)
             ->size(300) // tamaño en píxeles
             ->margin(10)
             ->build();
 
         // Guardar archivo PNG
-        $filename = "$qrFolder/$dni.png";
+        $filename = "$qrFolder/$celular.png";
         $qr->saveToFile($filename);
 
         // Redirigir al dashboard
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h4 class="text-center">Nuevo Cliente</h4>
         <form method="post">
             <input type="text" name="nombre" placeholder="Nombre Completo" class="form-control mb-3" required>
-            <input type="text" name="dni" placeholder="DNI" class="form-control mb-3" required>
+            <input type="text" name="dni" placeholder="DNI (opcional)" class="form-control mb-3">
             <input type="text" name="celular" placeholder="Celular" class="form-control mb-3" required>
             <input type="password" name="password" placeholder="Contraseña" class="form-control mb-4" required>
             <button type="submit" class="btn btn-primary w-100">Crear Cliente</button>

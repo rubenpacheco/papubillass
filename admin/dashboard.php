@@ -93,7 +93,7 @@ include '../includes/db.php';
                             ?>
                             <tr>
                                 <td><?= htmlspecialchars($cli['nombre_completo']) ?></td>
-                                <td><?= htmlspecialchars($cli['dni']) ?></td>
+                                <td><?= htmlspecialchars($cli['dni'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($cli['celular']) ?></td>
                                 <td><span class="badge bg-info fs-6"><?= $sellos ?></span></td>
                                 <td>

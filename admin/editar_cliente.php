@@ -19,12 +19,17 @@ if (!$cliente) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre_completo'];
-    $dni = $_POST['dni'];
-    $celular = $_POST['celular'];
-    $password = $_POST['password'];
+    $dni = trim($_POST['dni'] ?? '');
+    $celular = trim($_POST['celular']);
+    $password = trim($_POST['password'] ?? '');
 
-    $update = $pdo->prepare("UPDATE usuarioss SET nombre_completo = ?, dni = ?, celular = ?, password = ? WHERE id = ?");
-    $update->execute([$nombre, $dni, $celular,$password , $id]);
+    if ($password !== '') {
+        $update = $pdo->prepare("UPDATE usuarioss SET nombre_completo = ?, dni = ?, celular = ?, password = ? WHERE id = ?");
+        $update->execute([$nombre, $dni !== '' ? $dni : null, $celular, password_hash($password, PASSWORD_BCRYPT), $id]);
+    } else {
+        $update = $pdo->prepare("UPDATE usuarioss SET nombre_completo = ?, dni = ?, celular = ? WHERE id = ?");
+        $update->execute([$nombre, $dni !== '' ? $dni : null, $celular, $id]);
+    }
 
     header("Location: dashboard.php");
     exit;
@@ -87,16 +92,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" name="nombre_completo" id="nombre_completo" class="form-control" value="<?= htmlspecialchars($cliente['nombre_completo']) ?>" required>
                 </div>
                 <div class="mb-3">
-                    <label for="dni" class="form-label">DNI</label>
-                    <input type="text" name="dni" id="dni" class="form-control" value="<?= htmlspecialchars($cliente['dni']) ?>" required>
+                    <label for="dni" class="form-label">DNI (opcional)</label>
+                    <input type="text" name="dni" id="dni" class="form-control" value="<?= htmlspecialchars($cliente['dni'] ?? '') ?>">
                 </div>
                 <div class="mb-3">
                     <label for="celular" class="form-label">Celular</label>
                     <input type="text" name="celular" id="celular" class="form-control" value="<?= htmlspecialchars($cliente['celular']) ?>" required>
                 </div>
                 <div class="mb-3">
-                    <label for="celular" class="form-label">Password</label>
-                    <input type="text" name="password" id="password" class="form-control" value="<?= htmlspecialchars($cliente['password']) ?>" required>
+                    <label for="password" class="form-label">Nueva contraseña</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Déjalo en blanco para no cambiarla">
                 </div>
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-success">💾 Guardar Cambios</button>

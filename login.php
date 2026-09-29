@@ -5,14 +5,23 @@ include 'includes/db.php';
 $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $dni = $_POST['dni'];
+    $celular = trim($_POST['celular']);
     $pass = $_POST['password'];
 
-    $stmt = $pdo->prepare("SELECT * FROM usuarioss WHERE dni = ? AND estado = 'activo'");
-    $stmt->execute([$dni]);
+    $stmt = $pdo->prepare("SELECT * FROM usuarioss WHERE celular = ? AND estado = 'activo'");
+    $stmt->execute([$celular]);
     $user = $stmt->fetch();
 
-    if ($user && $user['password'] === $pass) {
+    $passOk = false;
+    if ($user) {
+        if (str_starts_with($user['password'], '$2y$') || str_starts_with($user['password'], '$argon')) {
+            $passOk = password_verify($pass, $user['password']);
+        } else {
+            $passOk = hash_equals($user['password'], $pass);
+        }
+    }
+
+    if ($user && $passOk) {
         $_SESSION['user'] = $user;
 
         if ($user['rol'] === 'admin') {
@@ -22,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         exit;
     } else {
-        $error = "DNI o contraseña incorrectos.";
+        $error = "Celular o contraseña incorrectos.";
     }
 }
 ?>
@@ -68,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <form method="post">
             <div class="mb-3 text-start">
-                <input type="text" name="dni" class="form-control" placeholder="DNI" required>
+                <input type="text" name="celular" class="form-control" placeholder="Celular" required>
             </div>
             <div class="mb-3 text-start">
                 <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
