@@ -117,6 +117,41 @@ include '../includes/db.php';
                 </div>
             </div>
 
+            <!-- Modal Editar Usuario -->
+            <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form class="modal-content" method="post" id="formEditar">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalEditarLabel">Editar Usuario</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label class="form-label">Nombre Completo</label>
+                            <input type="text" name="nombre_completo" class="form-control mb-3" required>
+                            <label class="form-label">DNI (opcional)</label>
+                            <input type="text" name="dni" class="form-control mb-3">
+                            <label class="form-label">Celular</label>
+                            <input type="text" name="celular" class="form-control mb-3" required>
+                            <label class="form-label">Rol</label>
+                            <select name="rol" class="form-select mb-3" required>
+                                <option value="trabajador">Trabajador</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="administrador">Administrador</option>
+                            </select>
+                            <label class="form-label">Nueva contraseña</label>
+                            <div class="input-group">
+                                <input type="password" name="password" class="form-control" placeholder="Déjalo en blanco para no cambiarla">
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePass(this)" title="Mostrar u ocultar contraseña">👁</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">💾 Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table id="clientesTable" class="table table-bordered table-hover align-middle text-center">
                     <thead>
@@ -144,8 +179,13 @@ include '../includes/db.php';
                                 <td><span class="badge bg-secondary"><?= htmlspecialchars($cli['rol']) ?></span></td>
                                 <td><span class="badge bg-info fs-6"><?= $sellos ?></span></td>
                                 <td>
-                                    <a href="editar_cliente.php?id=<?= $cli['id'] ?>" class="btn btn-sm btn-warning">✏️
-                                        Editar</a>
+                                    <button type="button" class="btn btn-sm btn-warning"
+                                        data-id="<?= $cli['id'] ?>"
+                                        data-nombre="<?= htmlspecialchars($cli['nombre_completo'], ENT_QUOTES) ?>"
+                                        data-dni="<?= htmlspecialchars($cli['dni'] ?? '', ENT_QUOTES) ?>"
+                                        data-celular="<?= htmlspecialchars($cli['celular'], ENT_QUOTES) ?>"
+                                        data-rol="<?= htmlspecialchars($cli['rol'], ENT_QUOTES) ?>"
+                                        onclick="abrirEditar(this)">✏️ Editar</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -207,6 +247,18 @@ include '../includes/db.php';
             const ver = input.type === 'password';
             input.type = ver ? 'text' : 'password';
             btn.textContent = ver ? '🙈' : '👁';
+        }
+
+        function abrirEditar(btn) {
+            const f = document.getElementById('formEditar');
+            f.action = 'editar_cliente.php?id=' + btn.dataset.id;
+            f.nombre_completo.value = btn.dataset.nombre;
+            f.dni.value = btn.dataset.dni;
+            f.celular.value = btn.dataset.celular;
+            const rol = btn.dataset.rol === 'admin' ? 'administrador' : btn.dataset.rol;
+            f.rol.value = rol;
+            f.password.value = '';
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('modalEditar')).show();
         }
     </script>
     <?php if (isset($_GET['open'])): ?>
