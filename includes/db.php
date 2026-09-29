@@ -1,8 +1,8 @@
 <?php
-$host = 'host.cpse13.eu';
-$db = 'y224661_bdgeneral';
-$user = 'y224661_userbdg';
-$pass = '@003EWQ2';
+$host = '148.113.206.59';
+$db = 'avicola2_bdtajetas';
+$user = 'avicola2_root';
+$pass = 'PapuBillas@@@';
 // $link = new PDO("mysql:host=host.cpse13.eu;dbname=y224661_bdgeneral" , "y224661_userbdg" , "@003EWQ2");
 
 try {
