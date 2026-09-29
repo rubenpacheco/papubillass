@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($user && $passOk) {
         $_SESSION['user'] = $user;
 
-        if ($user['rol'] === 'admin') {
+        if (in_array($user['rol'], ['admin', 'administrador'], true)) {
             header("Location: admin/dashboard.php");
         } else {
             header("Location: cliente/qr.php");

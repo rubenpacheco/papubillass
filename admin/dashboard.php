@@ -66,10 +66,52 @@ include '../includes/db.php';
         </div>
 
         <div class="card-container">
+            <?php if (isset($_GET['ok'])): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ✅ Usuario registrado correctamente.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['err'])): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($_GET['err']) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+
             <div class="action-buttons d-flex mb-4">
-                <a href="crear_cliente.php" class="btn btn-primary">➕ Crear Cliente</a>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalUsuario">➕ Usuario</button>
                 <a href="scan_qr.php" class="btn btn-success">📷 Escanear QR</a>
                 <a href="configd.php" class="btn btn-success">📷 Diseño Sellos</a>
+            </div>
+
+            <!-- Modal Registrar Usuario -->
+            <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form class="modal-content" method="post" action="crear_cliente.php">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalUsuarioLabel">Registrar Usuario</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" name="nombre" placeholder="Nombre Completo" class="form-control mb-3" required>
+                            <input type="text" name="dni" placeholder="DNI (opcional)" class="form-control mb-3">
+                            <input type="text" name="celular" placeholder="Celular" class="form-control mb-3" required>
+                            <input type="password" name="password" placeholder="Contraseña" class="form-control mb-3" required>
+                            <label for="rol" class="form-label">Rol</label>
+                            <select name="rol" id="rol" class="form-select mb-2" required>
+                                <option value="trabajador">Trabajador</option>
+                                <option value="cliente" selected>Cliente</option>
+                                <option value="administrador">Administrador</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="table-responsive">
@@ -79,13 +121,14 @@ include '../includes/db.php';
                             <th>Nombre</th>
                             <th>DNI</th>
                             <th>Celular</th>
+                            <th>Rol</th>
                             <th>Sellos</th>
                             <th>Acciones</th> <!-- Nueva columna -->
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $clientes = $pdo->query("SELECT * FROM usuarioss WHERE rol = 'cliente'")->fetchAll();
+                        $clientes = $pdo->query("SELECT * FROM usuarioss ORDER BY id")->fetchAll();
                         foreach ($clientes as $cli):
                             $stmt = $pdo->prepare("SELECT COUNT(*) FROM sellos WHERE usuario_id = ?");
                             $stmt->execute([$cli['id']]);
@@ -95,6 +138,7 @@ include '../includes/db.php';
                                 <td><?= htmlspecialchars($cli['nombre_completo']) ?></td>
                                 <td><?= htmlspecialchars($cli['dni'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($cli['celular']) ?></td>
+                                <td><span class="badge bg-secondary"><?= htmlspecialchars($cli['rol']) ?></span></td>
                                 <td><span class="badge bg-info fs-6"><?= $sellos ?></span></td>
                                 <td>
                                     <a href="editar_cliente.php?id=<?= $cli['id'] ?>" class="btn btn-sm btn-warning">✏️
@@ -151,6 +195,16 @@ include '../includes/db.php';
         });
 
     </script>
+
+    <!-- Bootstrap JS (necesario para el modal) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <?php if (isset($_GET['open'])): ?>
+        <script>
+            window.addEventListener('load', function () {
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('modalUsuario')).show();
+            });
+        </script>
+    <?php endif; ?>
 
 </body>
 
