@@ -4,7 +4,7 @@
         <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp">
     </div>
     <div class="whatsapp-message">
-        💬 ¿Adquiere tu software?
+        💬 ¿Adquiere tu Sistema o software?
     </div>
 </a>
 
