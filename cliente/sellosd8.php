@@ -9,8 +9,20 @@ $stmtqr = $pdo->prepare("SELECT sellos FROM qrconfig ORDER BY id DESC LIMIT 1");
 $stmtqr->execute();
 $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
 ?>
+<?php include '../includes/theme-head.php'; ?>
+<style>
+    body {
+        padding: 1rem;
+    }
+
+    [data-bs-theme="dark"] body {
+        background-color: #1c1e22;
+        color: #dee2e6;
+    }
+</style>
 <h3>Mis Sellos</h3>
 <p>Tienes <?= $total ?> sellos.</p>
 <p><?= $total >= $meta ? "¡Ganaste un premio!" : "Te faltan " . ($meta - $total) . " para un premio." ?></p>
-<a href="qr.php">Volver al QR</a>
+<a href="qr.php" class="btn btn-primary" style="background: #666308; border-color: #28a745;">Volver al QR</a>
 <?php include '../includes/whatsapp.php'; ?>
+<?php include '../includes/theme-foot.php'; ?>

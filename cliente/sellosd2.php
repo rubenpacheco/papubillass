@@ -18,6 +18,7 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
 <head>
     <meta charset="UTF-8">
     <title>Mis Sellos</title>
+    <?php include '../includes/theme-head.php'; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -62,6 +63,15 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
         .emoji {
             font-size: 1.5rem;
         }
+
+        [data-bs-theme="dark"] body {
+            background: linear-gradient(135deg, #1c1e22, #2b3035);
+        }
+
+        [data-bs-theme="dark"] .sellos-card {
+            background: #2b3035;
+            color: #dee2e6;
+        }
     </style>
 </head>
 <body>
@@ -97,10 +107,11 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
                 </div>
             </div>
 
-            <a href="qr.php" class="btn btn-outline-primary btn-custom mt-3">← Volver a mi QR</a>
+            <a href="qr.php" class="btn btn-primary btn-custom mt-3" style="background: #666308; border-color: #28a745;">← Volver a mi QR</a>
         </div>
     </div>
 
 <?php include '../includes/whatsapp.php'; ?>
+<?php include '../includes/theme-foot.php'; ?>
 </body>
 </html>

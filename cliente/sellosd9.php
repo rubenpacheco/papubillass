@@ -20,6 +20,7 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Tarjeta de Fidelización</title>
+    <?php include '../includes/theme-head.php'; ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Reset default margin and padding */
@@ -143,7 +144,7 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
 
         .btn-back {
             padding: 12px 30px;
-            background: linear-gradient(135deg, #ff007c, #ff8c00);
+            background: #666308;
             color: white;
             font-weight: bold;
             border-radius: 30px;
@@ -154,7 +155,7 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
         }
 
         .btn-back:hover {
-            background: linear-gradient(135deg, #00b0ff, #ff8c00);
+            background: #4f4e06;
             transform: scale(1.1);
         }
 
@@ -175,6 +176,15 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
                 font-size: 18px;
             }
         }
+
+        [data-bs-theme="dark"] body {
+            background-color: #1c1e22;
+        }
+
+        [data-bs-theme="light"] body {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
     </style>
 </head>
 <body>
@@ -182,7 +192,8 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
     <div class="container">
         <div class="tarjeta">
             <div class="tarjeta-header">
-                <img src="../imgs/logo.jpg" alt="Logo">
+                <img src="../imgs/logo-modo-claro.png" alt="Logo" class="logo-light">
+                <img src="../imgs/logo-modo-oscuro.png" alt="Logo" class="logo-dark">
                 <h3>Aquí puedes ver tu progreso hacia el premio</h3>
                 <div class="badge">
                     <?= $total >= $meta ? "¡Premio!" : "Faltan " . ($meta - $total) . " sellos" ?>
@@ -208,5 +219,6 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
     </div>
 
 <?php include '../includes/whatsapp.php'; ?>
+<?php include '../includes/theme-foot.php'; ?>
 </body>
 </html>

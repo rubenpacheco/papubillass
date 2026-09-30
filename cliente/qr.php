@@ -49,6 +49,16 @@ $disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
             margin: auto;
         }
 
+        [data-bs-theme="dark"] .qr-card {
+            background-color: #2b3035 !important;
+            border-color: rgba(255, 255, 255, .06) !important;
+            color: #dee2e6;
+        }
+
+        [data-bs-theme="dark"] .qr-card .text-muted {
+            color: #adb5bd !important;
+        }
+
         .qr-img {
             max-width: 100%;
             height: auto;
@@ -58,8 +68,8 @@ $disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
         }
 
         [data-bs-theme="dark"] .qr-img {
-            border-color: #495057;
-            background-color: #343a40;
+            border-color: rgba(255, 255, 255, .08);
+            background-color: #ffffff;
         }
 
         .theme-toggle {

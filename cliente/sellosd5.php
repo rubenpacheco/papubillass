@@ -19,6 +19,7 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mi Tarjeta de Fidelización</title>
+    <?php include '../includes/theme-head.php'; ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -101,7 +102,7 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
             display: block;
             width: 100%;
             padding: 12px;
-            background-color: #007bff;
+            background-color: #666308;
             color: white;
             font-weight: bold;
             text-align: center;
@@ -111,7 +112,7 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
         }
 
         .btn-back:hover {
-            background-color: #0056b3;
+            background-color: #4f4e06;
         }
 
         /* Responsive */
@@ -131,6 +132,41 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
                 height: 50px;
             }
         }
+
+        [data-bs-theme="dark"] body {
+            background-color: #1c1e22;
+        }
+
+        [data-bs-theme="dark"] .tarjeta {
+            background-color: #2b3035;
+            border-color: #495057;
+            color: #dee2e6;
+        }
+
+        [data-bs-theme="dark"] .tarjeta-header h3 {
+            color: #dee2e6;
+        }
+
+        [data-bs-theme="dark"] .sello {
+            background-color: #343a40;
+            border-color: #495057;
+            color: #adb5bd;
+        }
+
+        [data-bs-theme="dark"] .sello.pending {
+            background-color: #2b3035;
+            color: #6c757d;
+        }
+
+        [data-bs-theme="dark"] .sello.completed {
+            background-color: #4CAF50;
+            color: #fff;
+            border-color: #4CAF50;
+        }
+
+        [data-bs-theme="dark"] .info {
+            color: #adb5bd;
+        }
     </style>
 </head>
 <body>
@@ -139,7 +175,8 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
         <div class="tarjeta">
             <!-- Header de la tarjeta -->
             <div class="tarjeta-header">
-                <img src="../imgs/logo.jpg" alt="Logo">
+                <img src="../imgs/logo-modo-claro.png" alt="Logo" class="logo-light">
+                <img src="../imgs/logo-modo-oscuro.png" alt="Logo" class="logo-dark">
                 <h3>Mi progreso hacia el premio</h3>
             </div>
 
@@ -165,5 +202,6 @@ $meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
     </div>
 
 <?php include '../includes/whatsapp.php'; ?>
+<?php include '../includes/theme-foot.php'; ?>
 </body>
 </html>
