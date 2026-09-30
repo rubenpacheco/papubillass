@@ -32,19 +32,27 @@ $disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
     </script>
     <style>
         /* Centrado total de la página */
-        body,
         html {
-            height: 100%;
+            background-color: #f8f9fa;
+        }
+
+        html[data-bs-theme="dark"] {
+            background-color: #212529;
+            color-scheme: dark;
+        }
+
+        html[data-bs-theme="light"] {
+            color-scheme: light;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f8f9fa;
-        }
-
-        [data-bs-theme="dark"] body,
-        [data-bs-theme="dark"] html {
-            background-color: #212529;
+            background-color: transparent;
         }
 
         .qr-card {
@@ -109,8 +117,7 @@ $disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
         }
 
         @media (max-width: 576px) {
-            body,
-            html {
+            body {
                 padding: 1rem;
             }
 
