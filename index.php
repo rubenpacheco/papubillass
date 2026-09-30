@@ -1,1 +1,4 @@
-<?php header('Location: login.php'); exit; ?>
+<?php
+require __DIR__ . '/includes/controllers.php';
+
+(new AuthController())->index();

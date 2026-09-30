@@ -1,11 +1,9 @@
 <?php
 include '../includes/db.php';
 include '../includes/models.php';
-$celular = $_GET['celular'] ?? '';
-$usuarios = new Usuario($pdo);
-$user = $usuarios->findByCelular($celular);
-if ($user) {
-    $sellos = new Sello($pdo);
-    $sellos->add($user['id']);
-}
+include '../includes/controllers.php';
+
+$controller = new AdminController($pdo);
+$controller->sumarSello($_GET['celular'] ?? '');
+
 header("Location: dashboard.php");

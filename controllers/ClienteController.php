@@ -13,6 +13,7 @@ class ClienteController
 
     public function showQr(): void
     {
+        $usuario = $_SESSION['user'];
         $disenio = $this->qrConfig->getDisenio();
         require __DIR__ . '/../views/cliente/qr.php';
     }
@@ -24,7 +25,8 @@ class ClienteController
             exit('Diseño no encontrado');
         }
 
-        $total = $this->sellos->countByUsuario($_SESSION['user']['id']);
+        $usuario = $_SESSION['user'];
+        $total = $this->sellos->countByUsuario($usuario['id']);
         $meta = $this->qrConfig->getMetaSellos();
 
         require __DIR__ . '/../views/cliente/sellosd' . $diseno . '.php';
