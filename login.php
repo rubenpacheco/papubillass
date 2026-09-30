@@ -43,31 +43,83 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Iniciar Sesión</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        (function () {
+            const t = localStorage.getItem('theme') ||
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-bs-theme', t);
+        })();
+    </script>
     <style>
         body {
             background: #f8f9fa;
+        }
+        [data-bs-theme="dark"] body {
+            background: #212529;
         }
         .login-wrapper {
             max-width: 400px;
             width: 100%;
             padding: 2rem;
         }
+        .login-wrapper.bg-white {
+            background-color: #fff !important;
+            color: #212529;
+        }
+        [data-bs-theme="dark"] .login-wrapper.bg-white {
+            background-color: #343a40 !important;
+            color: #dee2e6;
+        }
+        .theme-toggle {
+            position: absolute;
+            top: .75rem;
+            right: .75rem;
+            border: none;
+            background: transparent;
+            font-size: 1.15rem;
+            line-height: 1;
+            padding: .35rem .5rem;
+            border-radius: .5rem;
+            cursor: pointer;
+        }
+        .theme-toggle:hover {
+            background: rgba(128, 128, 128, .2);
+        }
         .logo {
-            max-width: 140px;
+            max-width: 240px;
             height: auto;
+        }
+        .logo-dark {
+            display: none;
+        }
+        [data-bs-theme="dark"] .logo-light {
+            display: none;
+        }
+        [data-bs-theme="dark"] .logo-dark {
+            display: inline-block;
         }
         @media (max-width: 576px) {
             .logo {
-                max-width: 100px;
+                max-width: 180px;
+            }
+            .login-wrapper {
+                width: calc(100% - 2rem);
+                max-width: calc(100% - 2rem);
+                padding: 1.5rem 1.25rem;
+            }
+            body {
+                padding: 1rem;
             }
         }
     </style>
 </head>
 <body class="d-flex justify-content-center align-items-center vh-100">
 
-    <div class="login-wrapper bg-white rounded shadow text-center">
+    <div class="login-wrapper bg-white rounded shadow text-center position-relative">
+        <button type="button" class="theme-toggle" id="themeToggle" title="Cambiar modo claro/oscuro" aria-label="Cambiar modo claro/oscuro">🌙</button>
         <!-- Logo -->
-        <img src="imgs/logo.jpg" alt="Logo" class="logo mb-3">
+        <img src="imgs/logo-modo-claro.png" alt="Logo" class="logo logo-light mb-3">
+        <img src="imgs/logo-modo-oscuro.png" alt="Logo" class="logo logo-dark mb-3">
 
         <h4 class="mb-4">Iniciar Sesión</h4>
 
@@ -85,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <button class="btn btn-outline-secondary" type="button" onclick="togglePass(this)" title="Mostrar u ocultar contraseña">👁</button>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+            <button type="submit" class="btn btn-primary w-100" style="background: #666308; border-color: #28a745;">Ingresar</button>
         </form>
     </div>
 
@@ -96,6 +148,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             input.type = ver ? 'text' : 'password';
             btn.textContent = ver ? '🙈' : '👁';
         }
+
+        const themeBtn = document.getElementById('themeToggle');
+
+        function renderTheme() {
+            const dark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+            themeBtn.textContent = dark ? '☀️' : '🌙';
+        }
+
+        themeBtn.addEventListener('click', () => {
+            const actual = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', actual);
+            localStorage.setItem('theme', actual);
+            renderTheme();
+        });
+
+        renderTheme();
     </script>
     
     <?php include 'includes/whatsapp.php'; ?>

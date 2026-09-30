@@ -20,6 +20,13 @@ $disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
     <title>Mi Código QR</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        (function () {
+            const t = localStorage.getItem('theme') ||
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-bs-theme', t);
+        })();
+    </script>
     <style>
         /* Centrado total de la página */
         body,
@@ -30,6 +37,11 @@ $disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
             justify-content: center;
             align-items: center;
             background-color: #f8f9fa;
+        }
+
+        [data-bs-theme="dark"] body,
+        [data-bs-theme="dark"] html {
+            background-color: #212529;
         }
 
         .qr-card {
@@ -44,11 +56,62 @@ $disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
             padding: 10px;
             background-color: #f8f9fa;
         }
+
+        [data-bs-theme="dark"] .qr-img {
+            border-color: #495057;
+            background-color: #343a40;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: .75rem;
+            right: .75rem;
+            border: none;
+            background: transparent;
+            font-size: 1.15rem;
+            line-height: 1;
+            padding: .35rem .5rem;
+            border-radius: .5rem;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(128, 128, 128, .2);
+        }
+
+        .acciones {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: .5rem;
+            align-items: stretch;
+        }
+
+        .acciones .btn {
+            flex: 1 1 0;
+            min-width: 0;
+            white-space: normal;
+            padding: .6rem .5rem;
+            font-size: .95rem;
+        }
+
+        @media (max-width: 576px) {
+            body,
+            html {
+                padding: 1rem;
+            }
+
+            .acciones .btn {
+                font-size: .85rem;
+                padding: .55rem .35rem;
+            }
+        }
     </style>
 </head>
 
 
 <body>
+    <button type="button" class="theme-toggle" id="themeToggle" title="Cambiar modo claro/oscuro" aria-label="Cambiar modo claro/oscuro">🌙</button>
 
     <div class="container">
         <div class="card qr-card shadow text-center p-4">
@@ -58,14 +121,35 @@ $disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
             <img src="../qrcodes/<?= htmlspecialchars($_SESSION['user']['celular']) ?>.png" alt="Mi Código QR"
                 class="qr-img mb-4">
 
-                <a href="<?= $disenio ?>.php" class="btn btn-primary d-block mb-3">Ver Sellos</a>
-                <a href="../logout.php" class="btn btn-secondary d-block">Cerrar sesión</a>
+                <div class="acciones">
+                    <a href="<?= $disenio ?>.php" class="btn btn-primary" style="background: #666308; border-color: #28a745;">Ver Sellos</a>
+                    <a href="../logout.php" class="btn btn-secondary">Cerrar sesión</a>
+                </div>
         </div>
 
 
     </div>
 
 <?php include '../includes/whatsapp.php'; ?>
+    <script>
+        (function () {
+            const btn = document.getElementById('themeToggle');
+            const root = document.documentElement;
+
+            function render() {
+                btn.textContent = root.getAttribute('data-bs-theme') === 'dark' ? '☀️' : '🌙';
+            }
+
+            btn.addEventListener('click', function () {
+                const next = root.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+                root.setAttribute('data-bs-theme', next);
+                localStorage.setItem('theme', next);
+                render();
+            });
+
+            render();
+        })();
+    </script>
 </body>
 
 </html>
