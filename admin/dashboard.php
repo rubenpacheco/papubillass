@@ -1,6 +1,7 @@
 <?php
 include '../includes/auth.php';
 include '../includes/db.php';
+include '../includes/models.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -353,11 +354,11 @@ include '../includes/db.php';
                     </thead>
                     <tbody>
                         <?php
-                        $clientes = $pdo->query("SELECT * FROM usuarioss ORDER BY id")->fetchAll();
+                        $usuariosModel = new Usuario($pdo);
+                        $sellosModel = new Sello($pdo);
+                        $clientes = $usuariosModel->findAll();
                         foreach ($clientes as $cli):
-                            $stmt = $pdo->prepare("SELECT COUNT(*) FROM sellos WHERE usuario_id = ?");
-                            $stmt->execute([$cli['id']]);
-                            $sellos = $stmt->fetchColumn();
+                            $sellos = $sellosModel->countByUsuario($cli['id']);
                             ?>
                             <tr>
                                 <td><?= htmlspecialchars($cli['nombre_completo']) ?></td>

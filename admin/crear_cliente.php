@@ -1,6 +1,7 @@
 <?php
 include '../includes/auth.php';
 include '../includes/db.php';
+include '../includes/models.php';
 
 require_once '../vendor/autoload.php';
 
@@ -31,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO usuarioss (nombre_completo, dni, celular, rol, password) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$nombre, $dni !== '' ? $dni : null, $celular, $rol, password_hash($password, PASSWORD_BCRYPT)]);
+        $usuarios = new Usuario($pdo);
+        $usuarios->create($nombre, $dni, $celular, $rol, $password);
 
         // Generar código QR con el celular
         $qrFolder = "../qrcodes";

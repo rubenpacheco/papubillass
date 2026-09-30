@@ -1,10 +1,11 @@
 <?php
 include '../includes/db.php';
+include '../includes/models.php';
 $celular = $_GET['celular'] ?? '';
-$stmt = $pdo->prepare("SELECT id FROM usuarioss WHERE celular = ?");
-$stmt->execute([$celular]);
-$user = $stmt->fetch();
+$usuarios = new Usuario($pdo);
+$user = $usuarios->findByCelular($celular);
 if ($user) {
-    $pdo->prepare("INSERT INTO sellos (usuario_id) VALUES (?)")->execute([$user['id']]);
+    $sellos = new Sello($pdo);
+    $sellos->add($user['id']);
 }
 header("Location: dashboard.php");

@@ -1,6 +1,7 @@
 <?php
 include '../includes/auth.php';
 include '../includes/db.php';
+include '../includes/models.php';
 
 if (!isset($_GET['id'])) {
     header('Location: dashboard.php');
@@ -8,9 +9,8 @@ if (!isset($_GET['id'])) {
 }
 
 $id = $_GET['id'];
-$stmt = $pdo->prepare("SELECT * FROM usuarioss WHERE id = ?");
-$stmt->execute([$id]);
-$cliente = $stmt->fetch();
+$usuarios = new Usuario($pdo);
+$cliente = $usuarios->findById($id);
 
 if (!$cliente) {
     echo "Cliente no encontrado";
@@ -30,13 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        if ($password !== '') {
-            $update = $pdo->prepare("UPDATE usuarioss SET nombre_completo = ?, dni = ?, celular = ?, rol = ?, password = ? WHERE id = ?");
-            $update->execute([$nombre, $dni !== '' ? $dni : null, $celular, $rol, password_hash($password, PASSWORD_BCRYPT), $id]);
-        } else {
-            $update = $pdo->prepare("UPDATE usuarioss SET nombre_completo = ?, dni = ?, celular = ?, rol = ? WHERE id = ?");
-            $update->execute([$nombre, $dni !== '' ? $dni : null, $celular, $rol, $id]);
-        }
+        $usuarios->update($id, $nombre, $dni, $celular, $rol, $password);
 
         header("Location: dashboard.php?ok=1");
         exit;

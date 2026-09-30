@@ -2,12 +2,12 @@
 <?php
 include '../includes/auth.php';
 include '../includes/db.php';
+include '../includes/models.php';
 
 
 
-$stmtqr = $pdo->prepare("SELECT disenio FROM qrconfig ORDER BY id DESC LIMIT 1");
-$stmtqr->execute();
-$disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
+$qrConfig = new QrConfig($pdo);
+$disenio = $qrConfig->getDisenio(); // ✅ Esto ya es el valor de 'sellos'
 
 ?>
 

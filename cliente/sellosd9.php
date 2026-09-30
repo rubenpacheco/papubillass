@@ -1,16 +1,15 @@
 <?php
 include '../includes/auth.php';
 include '../includes/db.php';
+include '../includes/models.php';
 
-$stmt = $pdo->prepare("SELECT COUNT(*) FROM sellos WHERE usuario_id = ?");
-$stmt->execute([$_SESSION['user']['id']]);
-$total = $stmt->fetchColumn();
+$sellosModel = new Sello($pdo);
+$total = $sellosModel->countByUsuario($_SESSION['user']['id']);
 // $meta = 5;
 
 
-$stmtqr = $pdo->prepare("SELECT sellos FROM qrconfig ORDER BY id DESC LIMIT 1");
-$stmtqr->execute();
-$meta = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
+$qrConfig = new QrConfig($pdo);
+$meta = $qrConfig->getMetaSellos(); // ✅ Esto ya es el valor de 'sellos'
 
 ?>
 
