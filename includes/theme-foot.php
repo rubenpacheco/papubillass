@@ -12,7 +12,8 @@
         btn.addEventListener('click', function () {
             var next = root.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
             root.setAttribute('data-bs-theme', next);
-            localStorage.setItem('theme', next);
+            try { localStorage.setItem('theme', next); } catch (e) {}
+            document.cookie = 'theme=' + next + ';path=/;max-age=31536000;SameSite=Lax';
             render();
         });
 

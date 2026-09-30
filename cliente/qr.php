@@ -22,7 +22,10 @@ $disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script>
         (function () {
-            const t = localStorage.getItem('theme') ||
+            const cookie = <?= json_encode(in_array($_COOKIE['theme'] ?? '', ['dark', 'light'], true) ? $_COOKIE['theme'] : '') ?>;
+            const t = cookie ||
+                localStorage.getItem('theme') ||
+                (document.cookie.match(/(?:^|;\s*)theme=(dark|light)(?:;|$)/) || [])[1] ||
                 (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
             document.documentElement.setAttribute('data-bs-theme', t);
         })();
@@ -153,7 +156,8 @@ $disenio = $stmtqr->fetchColumn(); // ✅ Esto ya es el valor de 'sellos'
             btn.addEventListener('click', function () {
                 const next = root.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
                 root.setAttribute('data-bs-theme', next);
-                localStorage.setItem('theme', next);
+                try { localStorage.setItem('theme', next); } catch (e) {}
+                document.cookie = 'theme=' + next + ';path=/;max-age=31536000;SameSite=Lax';
                 render();
             });
 

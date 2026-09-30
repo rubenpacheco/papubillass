@@ -16,48 +16,223 @@ include '../includes/db.php';
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
+    <?php include '../includes/theme-head.php'; ?>
+
     <style>
         body {
             background-color: #f4f6f9;
         }
 
+        [data-bs-theme="dark"] body {
+            background-color: #1b1e21;
+            color: #dee2e6;
+        }
+
         .card-container {
             background: white;
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            border: 1px solid transparent;
+        }
+
+        [data-bs-theme="dark"] .card-container {
+            background: #262b30;
+            border-color: rgba(255, 255, 255, .06);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .45);
+            color: #dee2e6;
         }
 
         .admin-header {
             margin-bottom: 30px;
         }
 
+        .admin-header h3 {
+            letter-spacing: -.5px;
+            line-height: 1.2;
+        }
+
+        .admin-header small {
+            font-size: .85rem;
+        }
+
+        .theme-toggle {
+            position: static;
+            border: 1px solid var(--bs-border-color);
+            font-size: 1rem;
+            padding: .5rem .7rem;
+            border-radius: .6rem;
+        }
+
         .action-buttons {
-            gap: 10px;
+            gap: .75rem;
+            flex-wrap: wrap;
         }
 
         .action-buttons a,
         .action-buttons button {
-            margin-right: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .45rem;
+            border-radius: 50px;
+            padding: .6rem 1.25rem;
+            font-weight: 600;
+            letter-spacing: .01em;
+            margin-right: 0;
+            transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
         }
 
-        .table thead {
-            background-color: #0d6efd;
-            color: white;
+        .action-buttons .btn-add {
+            background: linear-gradient(135deg, #ff6b81, #ee2271);
+            border: 1px solid transparent;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(238, 34, 113, .3);
+        }
+
+        .action-buttons .btn-scan {
+            background: linear-gradient(135deg, #0d6efd, #00d2ff);
+            border: 1px solid transparent;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 150, 255, .32);
+        }
+
+        .action-buttons .btn-design {
+            background: linear-gradient(135deg, #fbbf24, #f97316);
+            border: 1px solid transparent;
+            color: #3d2600;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, .32);
+        }
+
+        .action-buttons a:hover,
+        .action-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, .22);
+            filter: brightness(1.08) saturate(1.05);
+            color: inherit;
+        }
+
+        .action-buttons a:active,
+        .action-buttons button:active {
+            transform: translateY(0);
+        }
+
+        .table {
+            --bs-table-bg: transparent;
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background: transparent;
+            color: var(--bs-body-color);
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            font-weight: 700;
+            padding: .9rem .75rem;
+            vertical-align: middle;
+            border-bottom: 2px solid var(--bs-border-color) !important;
+        }
+
+        .table td {
+            padding: .75rem;
+            vertical-align: middle;
+        }
+
+        .table td:first-child,
+        .table th:first-child {
+            text-align: left;
+            font-weight: 600;
         }
 
         .table tbody tr:hover {
             background-color: #f1f1f1;
         }
 
+        [data-bs-theme="dark"] .table tbody tr:hover {
+            background-color: rgba(255, 255, 255, .06);
+        }
+
+        [data-bs-theme="dark"] .table td,
+        [data-bs-theme="dark"] .table th {
+            border-color: rgba(255, 255, 255, .1) !important;
+            color: #dee2e6;
+        }
+
+        /* DataTables en modo oscuro */
+        [data-bs-theme="dark"] .dataTables_wrapper .dataTables_filter input,
+        [data-bs-theme="dark"] .dataTables_wrapper .dataTables_length select {
+            background-color: #1b1e21;
+            border-color: rgba(255, 255, 255, .15);
+            color: #dee2e6;
+        }
+
+        [data-bs-theme="dark"] .dataTables_wrapper .dataTables_info,
+        [data-bs-theme="dark"] .dataTables_wrapper .dataTables_length,
+        [data-bs-theme="dark"] .dataTables_wrapper .dataTables_filter label {
+            color: #adb5bd;
+        }
+
+        [data-bs-theme="dark"] .page-link {
+            background-color: #262b30;
+            border-color: rgba(255, 255, 255, .1);
+            color: #dee2e6;
+        }
+
+        [data-bs-theme="dark"] .page-link:hover {
+            background-color: #2f363d;
+            color: #fff;
+        }
+
+        [data-bs-theme="dark"] .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: #fff;
+        }
+
         @media (max-width: 576px) {
+            body.p-4 {
+                padding: .75rem !important;
+            }
+
+            .admin-header {
+                flex-wrap: nowrap;
+                align-items: flex-start;
+                gap: .5rem !important;
+            }
+
+            .admin-header > div:first-child {
+                min-width: 0;
+            }
+
+            .admin-header h3 {
+                font-size: 1.1rem;
+                white-space: normal;
+            }
+
+            .admin-header small {
+                font-size: .72rem;
+            }
+
+            .admin-header > div:last-child {
+                flex-shrink: 0;
+                gap: .4rem !important;
+            }
+
+            .card-container {
+                padding: 20px 15px;
+            }
+
             .action-buttons {
                 flex-direction: column;
+                align-items: stretch;
             }
 
             .action-buttons a,
             .action-buttons button {
-                margin-bottom: 10px;
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 0;
             }
         }
     </style>
@@ -66,9 +241,15 @@ include '../includes/db.php';
 <body class="p-4">
 
     <div class="container">
-        <div class="admin-header d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold">Panel de Administración</h3>
-            <a href="../logout.php" class="btn btn-outline-danger">Cerrar sesión</a>
+        <div class="admin-header d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+            <div>
+                <h3 class="fw-bold mb-0">Panel de Administración</h3>
+                <small class="text-muted">Gestiona clientes, sellos y diseño de tarjetas</small>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <?php include '../includes/theme-foot.php'; ?>
+                <a href="../logout.php" class="btn btn-outline-danger" title="Cerrar sesión" aria-label="Cerrar sesión">✕</a>
+            </div>
         </div>
 
         <div class="card-container">
@@ -87,9 +268,9 @@ include '../includes/db.php';
             <?php endif; ?>
 
             <div class="action-buttons d-flex mb-4">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalUsuario">➕ Usuario</button>
-                <a href="scan_qr.php" class="btn btn-success">📷 Escanear QR</a>
-                <a href="configd.php" class="btn btn-success">📷 Diseño Sellos</a>
+                <button type="button" class="btn btn-add" data-bs-toggle="modal" data-bs-target="#modalUsuario">➕ Usuario</button>
+                <a href="scan_qr.php" class="btn btn-scan">📷 Escanear QR</a>
+                <a href="configd.php" class="btn btn-design">🎨 Diseño Sellos</a>
             </div>
 
             <!-- Modal Registrar Usuario -->
@@ -159,7 +340,7 @@ include '../includes/db.php';
             </div>
 
             <div class="table-responsive">
-                <table id="clientesTable" class="table table-bordered table-hover align-middle text-center">
+                <table id="clientesTable" class="table table-bordered table-striped table-hover align-middle text-center">
                     <thead>
                         <tr>
                             <th>Nombre</th>

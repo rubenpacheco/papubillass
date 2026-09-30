@@ -1,6 +1,14 @@
+<?php
+$themeCookie = $_COOKIE['theme'] ?? '';
+if (!in_array($themeCookie, ['dark', 'light'], true)) {
+    $themeCookie = '';
+}
+?>
 <script>
     (function () {
-        var t = localStorage.getItem('theme') ||
+        var t = <?= $themeCookie ? "'" . $themeCookie . "'" : 'null' ?> ||
+            localStorage.getItem('theme') ||
+            (document.cookie.match(/(?:^|;\s*)theme=(dark|light)(?:;|$)/) || [])[1] ||
             (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-bs-theme', t);
     })();
